@@ -25,22 +25,23 @@ def Consumer():
   req = q.get(block=True)
   type = "" 
   if "bio.txt" in req:
-   fin=codecs.open("bio.txt","r",encoding="utf-8")
+   content=codecs.open("bio.txt","r",encoding="utf-8").read()
    type = "text/plain"
+   response = header_gen(type,str(len(content)))+content 
+   conn.send(response.encode("utf-8")) 
   elif "favicon" in req:
-   fin=open("favicon.ico","rb")
+   content=open("favicon.png","rb").read()
    type = "image/png"
+   response = header_gen(type,str(len(content))) 
+   conn.send(response.encode("utf-8")) 
+   conn.send(content)
   else: 
-   fin = open("index.html","r")
+   content = open("index.html","r").read()
    type = "text/html"
-  content1 = fin.read()
-  fin.close()
+   response = header_gen(type,str(len(content)))+content 
+   conn.send(response.encode("utf-8")) 
   
-  response = header_gen(type,str(len(content1)))+content1 
-  conn.send(response.encode("utf-8")) 
-  #conn.close() 
-
-
+   
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s: 
  s.bind((HOST,PORT))
  s.listen()
