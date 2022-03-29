@@ -40,7 +40,7 @@ def Consumer():
    type = "text/html"
    response = header_gen(type,str(len(content)))+content 
    conn.send(response.encode("utf-8")) 
-  
+     
    
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s: 
  s.bind((HOST,PORT))
