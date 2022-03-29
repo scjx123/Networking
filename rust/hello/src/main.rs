@@ -1,0 +1,21 @@
+use std::net::TcpListener;
+use std::io::prelude::*; 
+use std::net::TcpStream; 
+
+fn main() {
+ let listener = TcpListener::bind("127.0.0.1:7878").unwrap(); 
+ /*
+  * .incoming() method returns a iterator which gives a sequence of streams 
+  * A single stream represents an open connection between the client and server
+  * 
+  */
+ for stream in listener.incoming(){
+   let stream = stream.unwrap(); //stops the program if errors happens. 
+   println!("Connection established"); 
+ }
+}
+fn handle_connection(mut stream: TcpStream){
+ let mut buffer = [0;1024];
+ stream.read(&mut buffer).unwrap(); 
+ println!("Request: {}", String::from_utf8_lossy(&buffer[..])); 
+}
